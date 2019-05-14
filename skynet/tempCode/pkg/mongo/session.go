@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Session struct {
@@ -22,12 +23,12 @@ func NewSession(url string) (*Session, error) {
 	return &Session{client}, nil
 }
 
-func (s *Session) Close() error {
-	return s.client.Disconnect(context.TODO())
+func (session *Session) Close() error {
+	return session.client.Disconnect(context.TODO())
 }
 
-func (s *Session) DropDatabase(db string) error {
-	db := s.client.Database(db)
+func (session *Session) DropDatabase(dbName string) error {
+	db := session.client.Database(dbName)
 
-	return db.DropDatabase(context.TODO())
+	return db.Drop(context.TODO())
 }
