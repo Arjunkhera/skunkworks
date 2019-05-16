@@ -4,7 +4,7 @@ import (
 	"log"
 	"testing"
 
-	"skynet/pkg"
+	root "skynet/pkg"
 	"skynet/pkg/mongo"
 )
 
@@ -30,7 +30,7 @@ func createUser_should_insert_user_into_mongo(t *testing.T) {
 	}
 
 	defer func() {
-		session.DropDatabase(mongoConfig.DbName)
+		//session.DropDatabase(mongoConfig.DbName)
 		session.Close()
 	}()
 
@@ -55,7 +55,7 @@ func createUser_should_insert_user_into_mongo(t *testing.T) {
 		UserName: "arjun",
 		Password: "khera"}
 
-	resultUser, _ := userService.Login(cred)
+	resultUser, _, _ := userService.Login(cred)
 
 	if resultUser.UserName != user.UserName {
 		t.Errorf("Incorrect Username. Expected `%s`, Got: `%s`", testUsername, resultUser.UserName)

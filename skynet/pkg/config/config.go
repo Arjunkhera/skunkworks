@@ -11,8 +11,7 @@ func GetConfig() *root.Config {
 		Mongo: &root.MongoConfig{
 			Ip:     envOrDefaultString("skynet:mongo:ip", "127.0.0.1:27017"),
 			DbName: envOrDefaultString("skynet:mongo:dbName", "myDb")},
-		Server: &root.ServerConfig{Port: envOrDefaultString("skynet:server:port", ":8080")},
-		Auth:   &root.AuthConfig{Secret: envOrDefaultString("skynet:auth:secret", "secret")}}
+		Server: &root.ServerConfig{Port: envOrDefaultString("skynet:server:port", ":8080")}}
 }
 
 func envOrDefaultString(envVar string, defaultValue string) string {

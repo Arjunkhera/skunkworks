@@ -1,7 +1,7 @@
 package mongo
 
 import (
-	"skynet/pkg"
+	root "skynet/pkg"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"

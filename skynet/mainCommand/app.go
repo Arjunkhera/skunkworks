@@ -4,18 +4,20 @@ import (
 	"fmt"
 	"log"
 
-	"skynet/pkg"
+	root "skynet/pkg"
 	"skynet/pkg/config"
 	"skynet/pkg/mongo"
 	"skynet/pkg/server"
 )
 
+// App forms the core struct for running the site
 type App struct {
 	server  *server.Server
 	session *mongo.Session
 	config  *root.Config
 }
 
+// Initialize bootstraps the app
 func (a *App) Initialize() {
 	a.config = config.GetConfig()
 
@@ -25,10 +27,12 @@ func (a *App) Initialize() {
 		log.Fatal("unable to connect to mongodb")
 	}
 
-	u := mongo.NewUserService(a.session, a.config.Mongo)
-	a.server = server.NewServer(u, a.config)
+	a.server = server.NewServer(a.config)
+	a.server.CreateRoutes()
+	a.server.CreateUserRouter(mongo.NewUserService(a.session, a.config.Mongo))
 }
 
+// Run starts the server
 func (a *App) Run() {
 	fmt.Println("Run")
 	defer a.session.Close()

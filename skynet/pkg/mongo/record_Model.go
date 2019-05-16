@@ -1,12 +1,24 @@
 package mongo
 
 import (
-	"skynet/pkg"
+	_ "skynet/pkg"
 )
 
-type RecordModel struct {
-	Identifier string
+type recordModel struct {
+	Identifier string `json:"ID"`
 
-	PublicKey  string
-	CommonName string
+	PublicKey  string `json:"PubKey"`
+	CommonName string `json:"CommonName"`
 }
+
+/*
+func newRecordModel() () {
+}
+
+type miscellaneousDataModel struct {
+	Identifier string `json:"ID"`
+
+	RandomData  string `json:"Key"`
+	RandomValue string `json:"Value"`
+}
+*/

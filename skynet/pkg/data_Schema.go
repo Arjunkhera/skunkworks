@@ -10,7 +10,7 @@ type User struct {
 type UserService interface {
 	CreateUser(u *User) error
 	GetUserByUsername(username string) (User, error)
-	Login(cred Credentials) (User, error)
+	Login(cred Credentials) (User, error, bool)
 }
 
 type Record struct {
@@ -20,16 +20,22 @@ type Record struct {
 	CommonName string `json:"CommonName"`
 }
 
-type MiscellaneousData struct {
-	RandomData string `json:"Misc"`
-}
-
 type RecordService interface {
 	CreateRecord(rec *Record) error
-	GetRecordByIdentifier(identifier string) (*Record, error)
 }
 
 /*
+type MiscellaneousData struct {
+	Identifier string `json:"ID"`
+
+	RandomData  string `json:"Key"`
+	RandomValue string `json:"Value"`
+}
+
+type MiscellaneousDataService interface {
+}
+
+
 type Claim struct {
 	RecordIdentifier string `json:"ID"`
 }

@@ -2,7 +2,7 @@ package mongo
 
 import (
 	"context"
-	"skynet/pkg"
+	root "skynet/pkg"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -43,18 +43,18 @@ func (userServ *UserService) GetUserByUsername(username string) (root.User, erro
 	return result, err
 }
 
-func (userServ *UserService) Login(cred root.Credentials) (root.User, error) {
+func (userServ *UserService) Login(cred root.Credentials) (root.User, error, bool) {
 	model := userModel{}
 	filter := bson.D{{"username", cred.UserName}}
 
 	err := userServ.collection.FindOne(context.TODO(), filter).Decode(&model)
 	if err != nil {
-		return root.User{}, err
+		return root.User{}, err, false
 	}
 
 	err = model.comparePassword(cred.Password)
 	if err != nil {
-		return root.User{}, err
+		return root.User{}, err, false
 	}
 
 	result := root.User{
@@ -62,5 +62,5 @@ func (userServ *UserService) Login(cred root.Credentials) (root.User, error) {
 		UserName:   model.UserName,
 		Password:   "--"}
 
-	return result, err
+	return result, nil, true
 }
