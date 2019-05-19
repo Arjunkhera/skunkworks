@@ -72,8 +72,13 @@ func (s *Server) getSubrouter(path string) *mux.Router {
 }
 
 // CreateBootRouter creates BootRouter for handling user related functions
-func (s *Server) CreateBootRouter(u root.UserService) {
-	NewBootRouter(u, s.getSubrouter("/boot"))
+func (s *Server) CreateBootRouter(u root.UserService, d root.DeviceService) {
+	NewBootRouter(u, d, s.getSubrouter("/boot"))
+}
+
+// CreatePairIdentityRouter creates PairIdentityRouter for handling user related functions
+func (s *Server) CreatePairIdentityRouter(pId root.PairIdentityService) {
+	NewPairIdentityRouter(pId, s.getSubrouter("/pairId"))
 }
 
 // CreateRoutes registers the independent handler functions
@@ -85,3 +90,5 @@ func (s *Server) CreateRoutes() {
 	s.router.HandleFunc("/failure", itDidNotWork)
 	s.router.HandleFunc("/view", randomViewHandler)
 }
+
+// <input type="submit" value="SUBMIT"/>

@@ -5,8 +5,27 @@
     </head>
 
     <body>
-        <h1>Random Landing Page</h1>
+        <h1>View All Pair Identities</h1>
         <p>This will be replaced by the contents of the users wallet</p>
+
+        <form method="post" action="/pairId/all">
+            <input type="submit" value="SUBMIT"/>
+        </form>
+
+        <br><br><br>
+        <hr>
+
+        <h1>Create New Pairwise Identity</h1>
+        <form method="post" action="/pairId/create">
+            <label for="name">Identity Name</label>
+            <input type="text" id="name" name="IdentityName">
+            <button type="submit">Create</button>
+        </form>
+
+        <br><br><br>
+        <hr>
+
+
     </body>
 
 </html>

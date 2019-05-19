@@ -17,19 +17,28 @@ func NewUserService(path string) *UserService {
 }
 
 // CreateUser stores credentials in the form of json
-func (userServ *UserService) CreateUser(u *root.User) error {
+func (userServ *UserService) CreateUser(u *root.User) (string, error) {
 	user, err := newUserModel(u)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	file, err := json.MarshalIndent(user, "", " ")
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = ioutil.WriteFile(userServ.filePath, file, 0644)
-	return err
+	if err != nil {
+		return "", err
+	}
+
+	uniqueID, err := user.generateUniqueIdentifier()
+	if err != nil {
+		return "", err
+	}
+
+	return uniqueID, err
 }
 
 // Login verifies the authorisation details

@@ -27,16 +27,15 @@ func (a *App) Initialize() {
 		log.Fatal("unable to create configuration file")
 	}
 
-	/*
-		a.session, err = mongo.NewSession(a.config.Mongo)
-		if err != nil {
-			log.Fatal("unable to connect to mongodb")
-		}
-	*/
+	a.session, err = mongo.NewSession(a.config.Mongo)
+	if err != nil {
+		log.Fatal("unable to connect to mongodb")
+	}
 
 	a.server = server.NewServer(a.config)
 	a.server.CreateRoutes()
-	a.server.CreateBootRouter(mongo.NewUserService(a.config.Boot.BootConfigPath))
+	a.server.CreateBootRouter(mongo.NewUserService(a.config.Boot.BootConfigPath), mongo.NewDeviceService(a.config.Boot.DeviceConfigPath))
+	a.server.CreatePairIdentityRouter(mongo.NewPairIdentityService(a.session, a.config.Mongo))
 }
 
 // Run starts the server

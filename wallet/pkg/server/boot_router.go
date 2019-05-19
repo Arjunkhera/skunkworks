@@ -8,13 +8,14 @@ import (
 )
 
 type bootRouter struct {
-	bootService root.UserService
+	bootService   root.UserService
+	deviceService root.DeviceService
 }
 
 // NewBootRouter create the router for User schema
-func NewBootRouter(u root.UserService, router *mux.Router) *mux.Router {
+func NewBootRouter(u root.UserService, d root.DeviceService, router *mux.Router) *mux.Router {
 
-	btRouter := bootRouter{u}
+	btRouter := bootRouter{u, d}
 	router.HandleFunc("/create", btRouter.createUserHandler).Methods("POST")
 	router.HandleFunc("/verify", btRouter.verifyUserHandler).Methods("POST")
 
@@ -25,9 +26,16 @@ func (ur *bootRouter) createUserHandler(w http.ResponseWriter, r *http.Request) 
 
 	cred := root.User{UserName: r.FormValue("name"), Password: r.FormValue("password")}
 	// write the credentials to the boot file
-	err := ur.bootService.CreateUser(&cred)
+	uniqueID, err := ur.bootService.CreateUser(&cred)
 	if err != nil {
-		http.Redirect(w, r, "/failure", 302)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	dev := root.Device{Identifier: uniqueID, PublicKey: ""}
+	err = ur.deviceService.CreateDevice(&dev)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	http.Redirect(w, r, "/view", 302)
@@ -37,10 +45,11 @@ func (ur *bootRouter) verifyUserHandler(w http.ResponseWriter, r *http.Request) 
 
 	cred := root.User{UserName: r.FormValue("name"), Password: r.FormValue("password")}
 	// verify the credentials from the boot file
-	flag, _ := ur.bootService.Login(cred)
+	flag, err := ur.bootService.Login(cred)
 	if !flag {
-		http.Redirect(w, r, "/failure", 302)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	http.Redirect(w, r, "/view", 302)
+	return
 }

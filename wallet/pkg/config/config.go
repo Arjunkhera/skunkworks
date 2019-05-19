@@ -15,9 +15,11 @@ func GetConfig() *root.Config {
 		Server: &root.ServerConfig{Port: envOrDefaultString("wallet:server:port", ":8000")},
 		Boot: &root.BootConfig{
 			BootConfigExists: false,
-			BootConfigPath:   os.Getenv("HOME") + "/wallet.txt"}}
+			BootConfigPath:   os.Getenv("HOME") + "/wallet.txt",
+			DeviceConfigPath: os.Getenv("HOME") + "/device.txt"}}
 }
 
+// CheckBootConfigFile checks for the existence of configuration files in the device
 func CheckBootConfigFile(rt *root.BootConfig) error {
 	// check if the boot file exists or not
 	_, err := os.Stat(rt.BootConfigPath)
@@ -27,13 +29,20 @@ func CheckBootConfigFile(rt *root.BootConfig) error {
 		return nil
 	}
 
-	// does not exist
+	// does not exist, create boot config file
 	file, err := os.Create(rt.BootConfigPath)
 	if err != nil {
 		return err
 	}
-
 	file.Close()
+
+	// create device config file
+	file, err = os.Create(rt.DeviceConfigPath)
+	if err != nil {
+		return err
+	}
+	file.Close()
+
 	return nil
 }
 

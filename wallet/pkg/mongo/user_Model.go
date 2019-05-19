@@ -44,3 +44,13 @@ func (u *userModel) setSaltedPassword(password string) error {
 
 	return nil
 }
+
+func (u *userModel) generateUniqueIdentifier() (string, error) {
+	randomIdentifier := []byte(u.UserName + u.PasswordHash + u.Salt)
+	hash, err := bcrypt.GenerateFromPassword(randomIdentifier, bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+
+	return string(hash[:]), nil
+}

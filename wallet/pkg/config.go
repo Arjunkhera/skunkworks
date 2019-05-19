@@ -15,6 +15,7 @@ type ServerConfig struct {
 type BootConfig struct {
 	BootConfigExists bool   `json:"bootconfig"`
 	BootConfigPath   string `json:"bootconfigpath"`
+	DeviceConfigPath string `json:"deviceconfigpath"`
 }
 
 // Config stores pointers to all other config structs
