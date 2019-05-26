@@ -61,6 +61,7 @@ func (s *Server) CreateRoutes() {
 	s.router.HandleFunc("/signup", displaySignUpHandler).Methods("GET")
 	s.router.HandleFunc("/login", displayLoginHandler).Methods("GET")
 	s.router.HandleFunc("/display", randomDisplay).Methods("GET")
+
 	// s.router.HandleFunc("/success", itWorked)
 	// s.router.HandleFunc("/failure", itDidNotWork)
 

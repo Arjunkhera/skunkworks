@@ -4,7 +4,10 @@ import (
 	"context"
 	root "skynet/pkg"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 )
 
 type RecordService struct {
@@ -28,12 +31,12 @@ func (recServ *RecordService) CreateRecord(rec *root.Record) error {
 	return error
 }
 
-func (recServ *PairIdentityService) GetAllRecords() ([]root.Record, error) {
+func (recServ *RecordService) GetAllRecords() ([]root.Record, error) {
 	var results []root.Record
 
 	findOptions := options.Find()
 	// Passing bson.D{{}} as the filter matches all documents in the collection
-	cur, err := pId.collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	cur, err := recServ.collection.Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
 		return nil, err
 	}

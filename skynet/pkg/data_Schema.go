@@ -13,6 +13,12 @@ type UserService interface {
 	Login(cred Credentials) (User, error, bool)
 }
 
+type ClaimService interface {
+	GetClaimByUserID(string) ([]Claim, error)
+	GetClaimDefnByClaimDefnID(string) ([]ClaimDefn, error)
+	CreateClaimDefn(map[string]string) (string, error)
+	CreateClaim(string, string) error
+}
 type Record struct {
 	Identifier string `json:"ID"`
 

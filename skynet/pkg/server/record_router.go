@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"io"
 	root "skynet/pkg"
 
 	"github.com/gorilla/mux"
@@ -52,7 +53,7 @@ func (rec *recordRouter) displayAllRecords(w http.ResponseWriter, r *http.Reques
 
 	bytes, err := json.MarshalIndent(results, "", " ")
 	if err != nil {
-		http.Error(w, err.Erro(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	io.WriteString(w, string(bytes))

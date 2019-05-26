@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.ParseFiles("frontPage.html", "login.html", "signup.html", "randomDisplay.html"))
+var templates = template.Must(template.ParseFiles("frontPage.html", "login.html", "signup.html", "randomDisplay.html", "createClaim.html"))
 
 func renderTemplate(w http.ResponseWriter, name string) {
 	err := templates.ExecuteTemplate(w, name+".html", nil)
@@ -14,6 +14,9 @@ func renderTemplate(w http.ResponseWriter, name string) {
 	}
 }
 
+func createClaim(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "createClaim")
+}
 func frontPage(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "frontPage")
 }
