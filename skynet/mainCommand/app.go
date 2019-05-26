@@ -30,6 +30,8 @@ func (a *App) Initialize() {
 	a.server = server.NewServer(a.config)
 	a.server.CreateRoutes()
 	a.server.CreateUserRouter(mongo.NewUserService(a.session, a.config.Mongo))
+	a.server.CreateRecordRouter(mongo.NewRecordService(a.session, a.config.Mongo))
+	a.server.CreateClaimRouter(mongo.NewClaimService(a.session, a.config.Mongo))
 }
 
 // Run starts the server

@@ -4,8 +4,10 @@ import (
 	"errors"
 	"strings"
 
+	"crypto/rand"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
+	"math/big"
 )
 
 type Crypto struct{}
@@ -33,4 +35,23 @@ func (c *Crypto) Compare(hash string, s string) error {
 	incoming := []byte(s + parts[1])
 	existing := []byte(parts[0])
 	return bcrypt.CompareHashAndPassword(existing, incoming)
+}
+
+func (c *Crypto) GenerateRandomASCIIString(length int) (string, error) {
+	result := ""
+	for {
+		if len(result) >= length {
+			return result, nil
+		}
+		num, err := rand.Int(rand.Reader, big.NewInt(int64(127)))
+		if err != nil {
+			return "", err
+		}
+		n := num.Int64()
+		// Make sure that the number/byte/letter is inside
+		// the range of printable ASCII characters (excluding space and DEL)
+		if n > 32 && n < 127 {
+			result += string(n)
+		}
+	}
 }

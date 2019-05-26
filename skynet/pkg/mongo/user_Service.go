@@ -24,9 +24,9 @@ func (userServ *UserService) CreateUser(u *root.User) error {
 		return err
 	}
 
-	_, error := userServ.collection.InsertOne(context.TODO(), user)
+	_, err = userServ.collection.InsertOne(context.TODO(), user)
 
-	return error
+	return err
 }
 
 func (userServ *UserService) GetUserByUsername(username string) (root.User, error) {

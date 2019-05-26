@@ -21,19 +21,19 @@ type Record struct {
 }
 
 type RecordService interface {
-	CreateRecord(rec *Record, identifier string) error
+	CreateRecord(rec *Record) error
+	GetAllRecords() ([]Record, error)
 	//GetRecordByUsername(username string) (Record, error)
-	//GetAllRecords() (Record, error)
 }
 
 type Claim struct {
-	UserIdentifier            string `json:"UID"`
-	ClaimDefinitionIdentifier string `json:"CDID"`
+	UserIdentifier      string `json:"UID"`
+	ClaimDefnIdentifier string `json:"CDID"`
 }
 
-type ClaimMethod struct {
-	ClaimDefinitionIdentifier string            `json:"CDID"`
-	AttributesToType          map[string]string `json:"ATTR"`
+type ClaimDefn struct {
+	ClaimDefnIdentifier string            `json:"CDID"`
+	AttributesToType    map[string]string `json:"ATTR"`
 }
 
 /*

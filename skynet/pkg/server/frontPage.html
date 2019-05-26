@@ -16,7 +16,25 @@
 
     <h1>SignUp</h1>
     <form method="get" action="/signup">
-        <button type="submit" value="signup">SignUp</button>
+        <button type="submit" value="signup<">Login</button>
+    </form>
+
+    <br><br><hr><br><br>
+
+    <h1>Display All Records</h1>
+    <form method="get" action="/record/displayAll">
+        <button type="submit" value="records">Records</button>
+    </form>
+
+    <br><br><hr><br><br>
+
+    <h1>Create Record</h1>
+    <form method="post" action="/record/create">
+          <label for="name">User name</label>
+          <input type="text" id="name" name="name">
+          <label for="commonName">Common Name</label>
+          <input type="text" id="commonName" name="commonName">
+          <button type="submit">Submit</button>
     </form>
 
     <br><br><hr><br><br>
