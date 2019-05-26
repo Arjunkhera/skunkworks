@@ -18,6 +18,8 @@ type ClaimService interface {
 	GetClaimDefnByClaimDefnID(string) ([]ClaimDefn, error)
 	CreateClaimDefn(map[string]string) (string, error)
 	CreateClaim(string, string) error
+	GetAllClaims() ([]Claim, error)
+	GetAllClaimDefns() ([]ClaimDefn, error)
 }
 type Record struct {
 	Identifier string `json:"ID"`

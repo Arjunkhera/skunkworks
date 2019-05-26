@@ -94,3 +94,61 @@ func (claimServ *ClaimService) CreateClaim(userID string, claimDefnID string) er
 
 	return err
 }
+
+func (claimServ *ClaimService) GetAllClaims() ([]root.Claim, error) {
+	var claims []root.Claim
+
+	findOptions := options.Find()
+	// Passing bson.D{{}} as the filter matches all documents in the collection
+	cur, err := claimServ.claimCollection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	for cur.Next(context.TODO()) {
+
+		var claim root.Claim
+		err := cur.Decode(&claim)
+		if err != nil {
+			return nil, err
+		}
+
+		claims = append(claims, claim)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	cur.Close(context.TODO())
+	return claims, nil
+}
+
+func (claimServ *ClaimService) GetAllClaimDefns() ([]root.ClaimDefn, error) {
+	var claimDefns []root.ClaimDefn
+
+	findOptions := options.Find()
+	// Passing bson.D{{}} as the filter matches all documents in the collection
+	cur, err := claimServ.claimDefnCollection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	for cur.Next(context.TODO()) {
+
+		var claimDefn root.ClaimDefn
+		err := cur.Decode(&claimDefn)
+		if err != nil {
+			return nil, err
+		}
+
+		claimDefns = append(claimDefns, claimDefn)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	cur.Close(context.TODO())
+	return claimDefns, nil
+}
