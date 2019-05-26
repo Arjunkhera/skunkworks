@@ -21,7 +21,9 @@ type Record struct {
 }
 
 type RecordService interface {
-	CreateRecord(rec *Record) error
+	CreateRecord(rec *Record, username string) error
+	//GetRecordByUsername(username string) (Record, error)
+	//GetAllRecords() (Record, error)
 }
 
 /*

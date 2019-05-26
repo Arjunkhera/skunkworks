@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -19,7 +20,7 @@ func NewUserRouter(u root.UserService, router *mux.Router) *mux.Router {
 
 	router.HandleFunc("/create", userRouter.createUserHandler).Methods("POST")
 	router.HandleFunc("/verify", userRouter.verifyUserHandler).Methods("POST")
-	// router.HandleFunc("/{username}", userRouter.getUserHandler).Methods("GET")
+	router.HandleFunc("/{username}", userRouter.getUserIdentifier).Methods("GET")
 
 	return router
 }
@@ -51,8 +52,8 @@ func (ur *userRouter) verifyUserHandler(w http.ResponseWriter, r *http.Request) 
 	http.Redirect(w, r, "/display", 302)
 }
 
-/*
-func (ur *userRouter) getUserHandler(w http.ResponseWriter, r *http.Request) {
+func (ur *userRouter) getUserIdentifier(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	username := vars["username"]
 
@@ -62,9 +63,11 @@ func (ur *userRouter) getUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	Json(w, http.StatusOK, user)
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(user)
 }
 
+/*
 // decodeUser parses the body of request
 func decodeUser(r *http.Request) (root.User, error) {
 	var u root.User
@@ -76,4 +79,5 @@ func decodeUser(r *http.Request) (root.User, error) {
 	err := json.NewDecoder(r.Body).Decode(&u)
 	return u, err
 }
+
 */

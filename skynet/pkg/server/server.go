@@ -44,6 +44,11 @@ func (s *Server) CreateUserRouter(u root.UserService) {
 	NewUserRouter(u, s.getSubrouter("/user"))
 }
 
+// CreateRecordRouter creates RecordRouter for handling record related functions
+func (s *Server) CreateRecordRouter(rec root.RecordService) {
+	NewRecordRouter(rec, s.getSubrouter("/rec"))
+}
+
 // CreateRoutes registers the independent handler functions
 func (s *Server) CreateRoutes() {
 
