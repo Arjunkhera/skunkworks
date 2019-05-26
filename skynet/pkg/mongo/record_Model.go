@@ -15,22 +15,9 @@ type recordModel struct {
 }
 
 func newRecordModel(rec *root.Record) {*recordModel, error) {
-	user := userModel{UserName: u.UserName}
-	err := user.setSaltedPassword(u.Password)
-	if err != nil {
-		return nil, err
-	}
+	record := recordModel{Identifier:rec.Identifier,PublicKey: "random123" ,CommonName:rec.CommonName}
 
-	user.Identifier, err = generateUniqueIdentifier(user.UserName, user.PasswordHash, user.Salt)
-
-	return &user, err
+	return record, err 
 }
 
-/*
-type miscellaneousDataModel struct {
-	Identifier string `json:"ID"`
 
-	RandomData  string `json:"Key"`
-	RandomValue string `json:"Value"`
-}
-*/

@@ -46,7 +46,7 @@ func (s *Server) CreateUserRouter(u root.UserService) {
 
 // CreateRecordRouter creates RecordRouter for handling record related functions
 func (s *Server) CreateRecordRouter(rec root.RecordService) {
-	NewRecordRouter(rec, s.getSubrouter("/rec"))
+	NewRecordRouter(rec, s.getSubrouter("/rec"), s.config.Port)
 }
 
 // CreateRoutes registers the independent handler functions

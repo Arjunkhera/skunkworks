@@ -14,6 +14,13 @@ func NewRecordService(session *Session, config *root.MongoConfig) *RecordService
 	return &RecordService{collection}
 }
 
-func (recServ *RecordService) CreateRecord(rec *root.Record, username string) error {
+func (recServ *RecordService) CreateRecord(rec *root.Record) error {
+	record, err := NewRecordModel(rec)
+	if err != nil {
+		return err
+	}
 
+	_, error := recServ.collection.InsertOne(context.TODO(), record)
+
+	return error
 }

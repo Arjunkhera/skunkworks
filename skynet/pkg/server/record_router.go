@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
 	root "skynet/pkg"
@@ -10,11 +11,12 @@ import (
 
 type recordRouter struct {
 	recordService root.RecordService
+	port          string
 }
 
 // NewRecordRouter create the router for Record schema
-func NewRecordRouter(rec root.RecordService, router *mux.Router) *mux.Router {
-	recordRouter := recordRouter{rec}
+func NewRecordRouter(rec root.RecordService, router *mux.Router, port string) *mux.Router {
+	recordRouter := recordRouter{rec, port}
 
 	router.HandleFunc("/create", recordRouter.createRecordHandler).Methods("POST")
 
@@ -23,9 +25,13 @@ func NewRecordRouter(rec root.RecordService, router *mux.Router) *mux.Router {
 
 func (rec *recordRouter) createRecordHandler(w http.ResponseWriter, r *http.Request) {
 	Record := root.Record{CommonName: r.FormValue("commonName")}
-	http.Redirect(w, r, r.FormValue, 302)
+	usr, err := http.Get("localhost" + rec.port + "/user/" + r.FormValue("name"))
 
-	err := rec.recordService.CreateRecord(&Record, r.FormValue("name"))
+	var u root.User
+	err := json.NewDecoder(usr.Body).Decode(&u)
+	Record.Identifier = u.Identifier
+	err := rec.recordService.CreateRecord(&Record)
+
 	if err != nil {
 		Error(w, http.StatusInternalServerError, err.Error())
 		return
