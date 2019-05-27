@@ -8,7 +8,8 @@ type MongoConfig struct {
 
 // ServerConfig stores config data for starting server
 type ServerConfig struct {
-	Port string `json:"port"`
+	Port     string `json:"port"`
+	SkynetIP string `json:"SkynetIP"`
 }
 
 // BootConfig stores config data to determing startup procedures

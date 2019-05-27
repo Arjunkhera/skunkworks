@@ -38,6 +38,8 @@ func (ur *bootRouter) createUserHandler(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
+	// send root.Device
+
 	http.Redirect(w, r, "/view", 302)
 }
 

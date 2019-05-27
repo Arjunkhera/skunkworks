@@ -25,14 +25,10 @@ type RecordService interface {
 	GetAllRecords() ([]Record, error)
 }
 
-type Claim struct {
+type ClaimDefn struct {
 	UserIdentifier string `json:"UID"`
 	CommonName     string `json:"CNAME"`
 
-	ClaimDefnIdentifier string `json:"CDID"`
-}
-
-type ClaimDefn struct {
 	ClaimDefnIdentifier string            `json:"CDID"`
 	AttributesToType    map[string]string `json:"ATTR"`
 }

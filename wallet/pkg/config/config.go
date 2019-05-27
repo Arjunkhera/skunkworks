@@ -12,7 +12,9 @@ func GetConfig() *root.Config {
 		Mongo: &root.MongoConfig{
 			Ip:     envOrDefaultString("wallet:mongo:ip", "127.0.0.1:27017"),
 			DbName: envOrDefaultString("wallet:mongo:dbName", "wallet")},
-		Server: &root.ServerConfig{Port: envOrDefaultString("wallet:server:port", ":8000")},
+		Server: &root.ServerConfig{
+			Port:     envOrDefaultString("wallet:server:port", ":8000"),
+			SkynetIP: envOrDefaultString("skynet:server:port", "http://localhost:8080")},
 		Boot: &root.BootConfig{
 			BootConfigExists: false,
 			BootConfigPath:   os.Getenv("HOME") + "/wallet.txt",

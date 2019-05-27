@@ -54,6 +54,11 @@ func (s *Server) CreateClaimRouter(rec root.ClaimService) {
 	NewClaimRouter(rec, s.getSubrouter("/claim"), s.config.Port)
 }
 
+// CreatePairIdentityRouter creates IdentityRouter for handling identity related functions
+func (s *Server) CreatePairIdentityRouter(id root.PairIdentityService) {
+	NewPairIdentityRouter(id, s.getSubrouter("/pairId"), s.config.Port)
+}
+
 // CreateRoutes registers the independent handler functions
 func (s *Server) CreateRoutes() {
 
@@ -61,8 +66,5 @@ func (s *Server) CreateRoutes() {
 	s.router.HandleFunc("/signup", displaySignUpHandler).Methods("GET")
 	s.router.HandleFunc("/login", displayLoginHandler).Methods("GET")
 	s.router.HandleFunc("/display", randomDisplay).Methods("GET")
-
-	// s.router.HandleFunc("/success", itWorked)
-	// s.router.HandleFunc("/failure", itDidNotWork)
 
 }
