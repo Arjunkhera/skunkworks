@@ -23,9 +23,10 @@ func NewClaimService(session *Session, config *root.MongoConfig) *ClaimService {
 	return &ClaimService{claimCollection, claimDefnCollection}
 }
 
-func (claimServ *ClaimService) CreateClaimDefn(attributesToTypes map[string]string) (string, error) {
+func (claimServ *ClaimService) CreateClaimDefn(attributesToTypes map[string]string, username string, commonName string) error {
 
-	var claimDefn root.ClaimDefn
+	claimDefn := root.ClaimDefn{UserIdentifier: username, CommonName: commonName}
+
 	var c crypto.Crypto
 	var err error
 
@@ -34,9 +35,10 @@ func (claimServ *ClaimService) CreateClaimDefn(attributesToTypes map[string]stri
 		log.Fatal(err)
 	}
 	claimDefn.AttributesToType = attributesToTypes
+
 	_, err = claimServ.claimDefnCollection.InsertOne(context.TODO(), claimDefn)
 
-	return claimDefn.ClaimDefnIdentifier, err
+	return err
 }
 
 func (claimServ *ClaimService) CreateClaim(userID string, claimDefnID string, commonName string) error {
@@ -129,6 +131,20 @@ func (claimServ *ClaimService) GetClaimDefnByClaimDefnID(identifier string) ([]r
 
 	cur.Close(context.TODO())
 	return claimDefns, nil
+}
+
+func (claimServ *ClaimService) GetClaimDefnByCommonName(IName string, CName string) (root.ClaimDefn, error) {
+
+	var claimDefn root.ClaimDefn
+	filter := bson.D{{"UserIdentifier", IName}, {"CommonName", CName}}
+
+	err := claimServ.claimDefnCollection.FindOne(context.TODO(), filter).Decode(&claimDefn)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return claimDefn, nil
 }
 
 func (claimServ *ClaimService) GetAllClaims() ([]root.Claim, error) {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Skynet</title>
+    </head>
+    <body>
+        <h1>Enter Claim Data</h1>
+
+        <br><br><hr>
+
+        <form method="post" action="/claim/create">
+            {{ range $key, $value := . }}
+            <label for="{{ $key }}">{{ $key }}</label>
+            <input type="text" id="{{ $key }}" name="{{ $key }}">
+            <label for="{{ $value }}">{{ $value}}</label>
+            <input type="{{ $value }}" id="{{ $value }}" name="{{ $value }}">
+            <br>
+            <br>
+            {{ end }}
+           <button type="submit">Submit</button>
+        </form>
+
+    </body>
+</html>

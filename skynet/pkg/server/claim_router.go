@@ -20,14 +20,16 @@ type claimRouter struct {
 func NewClaimRouter(claim root.ClaimService, router *mux.Router, port string) *mux.Router {
 	claimrt := claimRouter{claim, port}
 
-	router.HandleFunc("/create", claimrt.createClaimHandler).Methods("POST")
+	router.HandleFunc("/createClaimDefn", claimrt.createClaimDefnHandler).Methods("POST")
+	router.HandleFunc("/createClaim", claimrt.createClaimHandler).Method("POST")
+	router.HandleFunc("/getClaimDefn", claimrt.getClaimDefn).Method("POST")
 	router.HandleFunc("/displayAllClaims", claimrt.displayAllClaims)
 	router.HandleFunc("/displayAllClaimDefns", claimrt.displayAllClaimDefns)
 
 	return router
 }
 
-func (claim *claimRouter) createClaimHandler(w http.ResponseWriter, r *http.Request) {
+func (claim *claimRouter) createClaimDefnHandler(w http.ResponseWriter, r *http.Request) {
 
 	result := make(map[string]string)
 
@@ -35,7 +37,6 @@ func (claim *claimRouter) createClaimHandler(w http.ResponseWriter, r *http.Requ
 		result[r.FormValue("attr"+strconv.Itoa(i))] = r.FormValue("type" + strconv.Itoa(i))
 	}
 
-	identifier, err := claim.claimService.CreateClaimDefn(result)
 	usr, err := http.Get("http://localhost" + claim.port + "/user/arjun")
 
 	var u root.User
@@ -46,8 +47,34 @@ func (claim *claimRouter) createClaimHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	claim.claimService.CreateClaim(u.Identifier, identifier, r.FormValue("cname"))
+	err = claim.claimService.CreateClaimDefn(result, u.Identifier, r.FormValue("cname"))
+	if err != nil {
+		Error(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	http.Redirect(w, r, "/display", 302)
+}
+
+func (claim *claimRouter) createClaimHandler(w *http.ResponseWriter, r *http.Request) {
+
+	var newClaim root.Claim
+
+	err := json.NewDecoder(r.Body).Decode(&newClaim)
+	if err != nil {
+		Error(w, http.StatusInternalServerError, err.Error())
+	}
+
+	data, err := http.GET("http://localhost" + claim.port + "/claim/enterData")
+
+}
+
+func (claimrt *claimRouter) getClaimDefn(w http.ResponseWriter, r *http.Request) {
+
+	IssuerName := r.FormValue("IssuerName")
+	CommonName := r.FormValue("CommonName")
+	claimDef := claimrt.claimService.GetClaimDefnByCommonName(IssuerName, CommonName)
+	templates.ExecuteTemplate(w, "createClaim.html", claimDef.AttributesToType)
 }
 
 func (claimrt *claimRouter) displayAllClaims(w http.ResponseWriter, r *http.Request) {
