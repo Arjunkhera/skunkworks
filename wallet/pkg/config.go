@@ -10,6 +10,7 @@ type MongoConfig struct {
 type ServerConfig struct {
 	Port     string `json:"port"`
 	SkynetIP string `json:"SkynetIP"`
+	ChainIP  string `json:ChainIP`
 }
 
 // BootConfig stores config data to determing startup procedures

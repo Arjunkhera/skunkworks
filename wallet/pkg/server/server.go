@@ -78,7 +78,7 @@ func (s *Server) CreateBootRouter(u root.UserService, d root.DeviceService) {
 
 // CreatePairIdentityRouter creates PairIdentityRouter for handling user related functions
 func (s *Server) CreatePairIdentityRouter(pId root.PairIdentityService) {
-	NewPairIdentityRouter(pId, s.getSubrouter("/pairId"), s.config.SkynetIP)
+	NewPairIdentityRouter(pId, s.getSubrouter("/pairId"), s.config.SkynetIP, s.config.ChainIP)
 }
 
 // CreateRoutes registers the independent handler functions
