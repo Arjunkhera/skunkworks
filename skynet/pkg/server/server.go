@@ -54,11 +54,6 @@ func (s *Server) CreateClaimRouter(rec root.ClaimService) {
 	NewClaimRouter(rec, s.getSubrouter("/claim"), s.config.Port)
 }
 
-// CreatePairIdentityRouter creates IdentityRouter for handling identity related functions
-func (s *Server) CreatePairIdentityRouter(id root.PairIdentityService) {
-	NewPairIdentityRouter(id, s.getSubrouter("/pairId"), s.config.Port)
-}
-
 // CreateRoutes registers the independent handler functions
 func (s *Server) CreateRoutes() {
 

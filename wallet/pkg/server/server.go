@@ -78,7 +78,7 @@ func (s *Server) CreateBootRouter(u root.UserService, d root.DeviceService) {
 
 // CreatePairIdentityRouter creates PairIdentityRouter for handling user related functions
 func (s *Server) CreatePairIdentityRouter(pId root.PairIdentityService) {
-	NewPairIdentityRouter(pId, s.getSubrouter("/pairId"))
+	NewPairIdentityRouter(pId, s.getSubrouter("/pairId"), s.config.SkynetIP)
 }
 
 // CreateRoutes registers the independent handler functions
@@ -88,5 +88,3 @@ func (s *Server) CreateRoutes() {
 	s.router.HandleFunc("/login", displayLoginHandler).Methods("GET")
 	s.router.HandleFunc("/view", displayViewHandler)
 }
-
-// <input type="submit" value="SUBMIT"/>

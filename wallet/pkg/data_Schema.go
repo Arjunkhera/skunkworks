@@ -26,11 +26,11 @@ type DeviceService interface {
 
 // PairIdentity is used to store the pairwise dids for the user
 type PairIdentity struct {
-	Identifier string `json:"Identifier"`
+	Identifier string `json:"DID"`
 
 	UserName       string `json:"UserName"`
 	OtherPartyName string `json:"OtherPartyName`
-	PublicKey      string `json:"PubKey"`
+	PublicKey      string `json:"Public Key"`
 }
 
 // PairIdentityService defines the valid operations on PairwiseIdentity struct

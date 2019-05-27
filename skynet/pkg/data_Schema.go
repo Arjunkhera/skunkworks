@@ -26,7 +26,7 @@ type RecordService interface {
 }
 
 type ClaimDefn struct {
-	UserIdentifier string `json:"UID"`
+	UserIdentifier string `json:"UName"`
 	CommonName     string `json:"CNAME"`
 
 	ClaimDefnIdentifier string            `json:"CDID"`
@@ -34,28 +34,28 @@ type ClaimDefn struct {
 }
 
 type Claim struct {
-	Identifier string `json:"Identifier"`
+	//	Identifier string `json:"Identifier"`
 
 	UserName string `json:"UserName"`
 
 	CommonName string `json:CommonName`
 	IssuerName string `json:"IssuerName`
 
-	PublicKey string `json:"PubKey"`
+	//	PublicKey string `json:"PubKey"`
 
 	Endpoint   string            `json:"Endpoint"`
 	HashedData map[string]string `json:HashedData`
 }
 
 type ClaimService interface {
-	CreateClaimDefn(map[string]string, string, string) (string, error)
-	CreateClaim(string, string, string) error
-
-	GetClaimByUserID(string) ([]Claim, error)
-	GetClaimByCommonName(string, string) (Claim, error)
-	GetClaimDefnByClaimDefnID(string) ([]ClaimDefn, error)
+	CreateClaimDefn(map[string]string, string, string) error
 	GetClaimDefnByCommonName(string, string) (ClaimDefn, error)
-
-	GetAllClaims() ([]Claim, error)
 	GetAllClaimDefns() ([]ClaimDefn, error)
+
+	CreateClaim(*Claim) error
+
+	// GetClaimByUserID(string) ([]Claim, error)
+	// GetClaimByCommonName(string, string) (Claim, error)
+	// GetClaimDefnByClaimDefnID(string) ([]ClaimDefn, error)
+	GetAllClaims() ([]Claim, error)
 }

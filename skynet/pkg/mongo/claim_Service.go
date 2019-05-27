@@ -38,18 +38,60 @@ func (claimServ *ClaimService) CreateClaimDefn(attributesToTypes map[string]stri
 
 	_, err = claimServ.claimDefnCollection.InsertOne(context.TODO(), claimDefn)
 
+	return nil
+}
+
+func (claimServ *ClaimService) CreateClaim(claim *root.Claim) error {
+
+	// claim := root.Claim{UserIdentifier: userID, CommonName: commonName, ClaimDefnIdentifier: claimDefnID}
+	_, err := claimServ.claimCollection.InsertOne(context.TODO(), *claim)
 	return err
 }
 
-func (claimServ *ClaimService) CreateClaim(userID string, claimDefnID string, commonName string) error {
+func (claimServ *ClaimService) GetClaimDefnByCommonName(IName string, CName string) (root.ClaimDefn, error) {
 
-	claim := root.Claim{UserIdentifier: userID, CommonName: commonName, ClaimDefnIdentifier: claimDefnID}
+	var claimDefn root.ClaimDefn
+	filter := bson.D{{"commonname", CName}}
 
-	_, err := claimServ.claimCollection.InsertOne(context.TODO(), claim)
+	err := claimServ.claimDefnCollection.FindOne(context.TODO(), filter).Decode(&claimDefn)
 
-	return err
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return claimDefn, nil
 }
 
+func (claimServ *ClaimService) GetAllClaimDefns() ([]root.ClaimDefn, error) {
+	var claimDefns []root.ClaimDefn
+
+	findOptions := options.Find()
+	// Passing bson.D{{}} as the filter matches all documents in the collection
+	cur, err := claimServ.claimDefnCollection.Find(context.TODO(), bson.D{{}}, findOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	for cur.Next(context.TODO()) {
+
+		var claimDefn root.ClaimDefn
+		err := cur.Decode(&claimDefn)
+		if err != nil {
+			return nil, err
+		}
+
+		claimDefns = append(claimDefns, claimDefn)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	cur.Close(context.TODO())
+	return claimDefns, nil
+}
+
+/*
 func (claimServ *ClaimService) GetClaimByUserID(identifier string) ([]root.Claim, error) {
 
 	var claims []root.Claim
@@ -132,21 +174,7 @@ func (claimServ *ClaimService) GetClaimDefnByClaimDefnID(identifier string) ([]r
 	cur.Close(context.TODO())
 	return claimDefns, nil
 }
-
-func (claimServ *ClaimService) GetClaimDefnByCommonName(IName string, CName string) (root.ClaimDefn, error) {
-
-	var claimDefn root.ClaimDefn
-	filter := bson.D{{"UserIdentifier", IName}, {"CommonName", CName}}
-
-	err := claimServ.claimDefnCollection.FindOne(context.TODO(), filter).Decode(&claimDefn)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return claimDefn, nil
-}
-
+*/
 func (claimServ *ClaimService) GetAllClaims() ([]root.Claim, error) {
 	var claims []root.Claim
 
@@ -174,33 +202,4 @@ func (claimServ *ClaimService) GetAllClaims() ([]root.Claim, error) {
 
 	cur.Close(context.TODO())
 	return claims, nil
-}
-
-func (claimServ *ClaimService) GetAllClaimDefns() ([]root.ClaimDefn, error) {
-	var claimDefns []root.ClaimDefn
-
-	findOptions := options.Find()
-	// Passing bson.D{{}} as the filter matches all documents in the collection
-	cur, err := claimServ.claimDefnCollection.Find(context.TODO(), bson.D{{}}, findOptions)
-	if err != nil {
-		return nil, err
-	}
-
-	for cur.Next(context.TODO()) {
-
-		var claimDefn root.ClaimDefn
-		err := cur.Decode(&claimDefn)
-		if err != nil {
-			return nil, err
-		}
-
-		claimDefns = append(claimDefns, claimDefn)
-	}
-
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	cur.Close(context.TODO())
-	return claimDefns, nil
 }
