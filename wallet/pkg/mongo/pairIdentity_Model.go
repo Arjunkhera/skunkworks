@@ -8,14 +8,15 @@ import (
 type pairIdentityModel struct {
 	Identifier string
 
-	UserName   string
-	PublicKey  string
-	PrivateKey string
+	UserName       string
+	OtherPartyName string
+	PublicKey      string
+	PrivateKey     string
 }
 
-func newPairIdentityModel(username string) (*pairIdentityModel, error) {
+func newPairIdentityModel(username string, otherPartyName string) (*pairIdentityModel, error) {
 	// add code to generate public private key pair
-	pairId := pairIdentityModel{UserName: username, PublicKey: "piD1", PrivateKey: "piD2"}
+	pairId := pairIdentityModel{UserName: username, OtherPartyName: otherPartyName, PublicKey: "piD1", PrivateKey: "piD2"}
 	err := pairId.generateUniqueIdentifier()
 	if err != nil {
 		return &pairId, err

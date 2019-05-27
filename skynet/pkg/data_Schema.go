@@ -13,14 +13,6 @@ type UserService interface {
 	Login(cred Credentials) (User, error, bool)
 }
 
-type ClaimService interface {
-	GetClaimByUserID(string) ([]Claim, error)
-	GetClaimDefnByClaimDefnID(string) ([]ClaimDefn, error)
-	CreateClaimDefn(map[string]string) (string, error)
-	CreateClaim(string, string) error
-	GetAllClaims() ([]Claim, error)
-	GetAllClaimDefns() ([]ClaimDefn, error)
-}
 type Record struct {
 	Identifier string `json:"ID"`
 
@@ -31,11 +23,12 @@ type Record struct {
 type RecordService interface {
 	CreateRecord(rec *Record) error
 	GetAllRecords() ([]Record, error)
-	//GetRecordByUsername(username string) (Record, error)
 }
 
 type Claim struct {
-	UserIdentifier      string `json:"UID"`
+	UserIdentifier string `json:"UID"`
+	CommonName     string `json:"CNAME"`
+
 	ClaimDefnIdentifier string `json:"CDID"`
 }
 
@@ -44,19 +37,30 @@ type ClaimDefn struct {
 	AttributesToType    map[string]string `json:"ATTR"`
 }
 
-/*
-type MiscellaneousData struct {
-	Identifier string `json:"ID"`
-
-	RandomData  string `json:"Key"`
-	RandomValue string `json:"Value"`
-}
-
-type MiscellaneousDataService interface {
-}
-
-
-
 type ClaimService interface {
+	CreateClaimDefn(map[string]string) (string, error)
+	CreateClaim(string, string, string) error
+
+	GetClaimByUserID(string) ([]Claim, error)
+	GetClaimByCommonName(string, string) (Claim, error)
+	GetClaimDefnByClaimDefnID(string) ([]ClaimDefn, error)
+
+	GetAllClaims() ([]Claim, error)
+	GetAllClaimDefns() ([]ClaimDefn, error)
 }
-*/
+
+type PairIdentity struct {
+	Identifier          string `json:"Identifier"`
+	ClaimDefnIdentifier string `json:"CDID"`
+
+	UserName       string `json:"UserName"`
+	OtherPartyName string `json:"OtherPartyName`
+	PublicKey      string `json:"PubKey"`
+
+	Endpoint   string            `json:"Endpoint"`
+	HashedData map[string]string `json:HashedData`
+}
+
+type PairIdentityService interface {
+	CreatePairIdentity(new PairIdentity) error
+}

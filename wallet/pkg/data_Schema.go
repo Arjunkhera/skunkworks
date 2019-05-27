@@ -28,13 +28,14 @@ type DeviceService interface {
 type PairIdentity struct {
 	Identifier string `json:"Identifier"`
 
-	UserName  string `json:"UserName"`
-	PublicKey string `json:"PubKey"`
+	UserName       string `json:"UserName"`
+	OtherPartyName string `json:"OtherPartyName`
+	PublicKey      string `json:"PubKey"`
 }
 
 // PairIdentityService defines the valid operations on PairwiseIdentity struct
 type PairIdentityService interface {
-	CreatePairIdentity(username string) error
+	CreatePairIdentity(username string, otherPartyName string) error
 	GetPairIdentityByUsername(username string) (PairIdentity, error)
 	GetAllPairIdentities() ([]PairIdentity, error)
 }

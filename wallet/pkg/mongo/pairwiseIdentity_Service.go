@@ -23,8 +23,8 @@ func NewPairIdentityService(session *Session, config *root.MongoConfig) *PairIde
 }
 
 // CreatePairIdentity creates and inserts an ID into mongo db
-func (pId *PairIdentityService) CreatePairIdentity(username string) error {
-	pairID, err := newPairIdentityModel(username)
+func (pId *PairIdentityService) CreatePairIdentity(username string, otherPartyName string) error {
+	pairID, err := newPairIdentityModel(username, otherPartyName)
 	if err != nil {
 		return err
 	}

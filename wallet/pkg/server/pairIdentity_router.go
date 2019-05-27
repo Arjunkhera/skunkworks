@@ -18,7 +18,7 @@ func NewPairIdentityRouter(pId root.PairIdentityService, router *mux.Router) *mu
 
 	pIdRouter := pairIdentityRouter{pId}
 	router.HandleFunc("/create", pIdRouter.createPairIdentityHandler).Methods("POST")
-	router.HandleFunc("/all", pIdRouter.getAllPairIdentitiesHandler).Methods("POST")
+	router.HandleFunc("/all", pIdRouter.getAllPairIdentitiesHandler)
 	// router.HandleFunc("/{pId}", pIdRouter.getPairIdentityHandler).Methods("GET")
 	// router.HandleFunc("/verify", btRouter.verifyUserHandler).Methods("POST")
 
@@ -27,14 +27,15 @@ func NewPairIdentityRouter(pId root.PairIdentityService, router *mux.Router) *mu
 
 func (pId *pairIdentityRouter) createPairIdentityHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("IdentityName")
-	err := pId.pairIdentityService.CreatePairIdentity(username)
+	otherPartyName := r.FormValue("OtherParty")
+
+	err := pId.pairIdentityService.CreatePairIdentity(username, otherPartyName)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	http.Redirect(w, r, "/view", 302)
-	//http.Redirect(w, r, "/pairId/"+username, 302)
 }
 
 func (pId *pairIdentityRouter) getPairIdentityHandler(w http.ResponseWriter, r *http.Request) {

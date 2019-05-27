@@ -35,7 +35,7 @@ func (s *Server) Start(flag bool) {
 		for {
 			time.Sleep(time.Second)
 
-			resp, err := http.Get("http://localhost:8000/success")
+			resp, err := http.Get("http://localhost:8000/login")
 			if err != nil {
 				log.Println("Failed:", err)
 				continue
@@ -86,9 +86,7 @@ func (s *Server) CreateRoutes() {
 
 	s.router.HandleFunc("/signup", displaySignUpHandler).Methods("GET")
 	s.router.HandleFunc("/login", displayLoginHandler).Methods("GET")
-	s.router.HandleFunc("/success", itWorked)
-	s.router.HandleFunc("/failure", itDidNotWork)
-	s.router.HandleFunc("/view", randomViewHandler)
+	s.router.HandleFunc("/view", displayViewHandler)
 }
 
 // <input type="submit" value="SUBMIT"/>

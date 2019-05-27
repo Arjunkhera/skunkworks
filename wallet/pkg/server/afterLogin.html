@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wallet</title>
+    </head>
+
+    <body>
+        <h1>Create New Pairwise Identity</h1>
+        <form method="post" action="/pairId/create">
+            <label for="name">Identity Name</label>
+            <input type="text" id="name" name="IdentityName">
+
+            <label for="otherPartyName">Other Party</label>
+            <input type="text" id="otherPartyName" name="OtherParty">
+
+            <button type="submit">Create</button>
+        </form>
+
+        <br><br><br>
+        <hr>
+
+        <h1>View All Pair Identities</h1>
+        <iframe method="get" src="/pairId/all" width="100%" height = "500">
+        </iframe>
+
+        <br><br><br>
+        <hr>
+    </body>
+
+</html>

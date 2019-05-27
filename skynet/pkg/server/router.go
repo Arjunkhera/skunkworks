@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.ParseFiles("frontPage.html", "login.html", "signup.html", "randomDisplay.html", "createClaim.html"))
+var templates = template.Must(template.ParseFiles("frontPage.html", "login.html", "signup.html", "afterLogin.html", "createRecord.html"))
 
 func renderTemplate(w http.ResponseWriter, name string) {
 	err := templates.ExecuteTemplate(w, name+".html", nil)
@@ -14,9 +14,10 @@ func renderTemplate(w http.ResponseWriter, name string) {
 	}
 }
 
-func createClaim(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "createClaim")
+func createRecord(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "createRecord")
 }
+
 func frontPage(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "frontPage")
 }
@@ -30,20 +31,5 @@ func displayLoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func randomDisplay(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "randomDisplay")
+	renderTemplate(w, "afterLogin")
 }
-
-/*
-func itWorked(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "success")
-}
-
-func itDidNotWork(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "failure")
-}
-
-func verifyLoginHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("we were here")
-	http.Redirect(w, r, "/user/verify", 302)
-}
-*/

@@ -19,13 +19,19 @@ type recordRouter struct {
 func NewRecordRouter(rec root.RecordService, router *mux.Router, port string) *mux.Router {
 	recordRouter := recordRouter{rec, port}
 
-	router.HandleFunc("/create", recordRouter.createRecordHandler).Methods("POST")
+	router.HandleFunc("/create", recordRouter.createRecordHandler)
 	router.HandleFunc("/displayAll", recordRouter.displayAllRecords).Methods("GET")
 
 	return router
 }
 
 func (rec *recordRouter) createRecordHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+		createRecord(w, r)
+		return
+	}
+
 	Record := root.Record{CommonName: r.FormValue("commonName")}
 
 	usr, err := http.Get("http://localhost" + rec.port + "/user/" + r.FormValue("name"))

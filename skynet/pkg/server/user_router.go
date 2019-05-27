@@ -34,7 +34,7 @@ func (ur *userRouter) createUserHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	http.Redirect(w, r, "/display", 302)
+	http.Redirect(w, r, "/record/create", 302)
 }
 
 func (ur *userRouter) verifyUserHandler(w http.ResponseWriter, r *http.Request) {
