@@ -44,14 +44,14 @@ func (pId *pairIdentityRouter) createPairIdentityHandler(w http.ResponseWriter, 
 
 	type chain struct {
 		DID       string `json:"DID"`
-		PublicKey string `json:"Public Key"`
-		WalletID  string `json:"Wallet ID"`
+		PublicKey string `json:"PublicKey"`
+		WalletID  string `json:"WalletID"`
 	}
 
 	temp := chain{
 		DID:       userID.Identifier,
 		PublicKey: userID.PublicKey,
-		WalletID:  "randomString"}
+		WalletID:  userID.Identifier}
 
 	msg, _ := json.Marshal(temp)
 	http.Post(pId.ChainIP, "application/json", bytes.NewBuffer(msg))
